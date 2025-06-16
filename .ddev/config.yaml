@@ -1,6 +1,6 @@
 name: askews-ai-leads
-type: php
-docroot: ""
+type: laravel
+docroot: public
 php_version: "8.3"
 webserver_type: nginx-fpm
 xdebug_enabled: false
