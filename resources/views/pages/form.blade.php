@@ -81,6 +81,6 @@
     </div>
 
     <textarea name="message" placeholder="Brief description..." class="border p-2 w-full rounded" required></textarea>
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Submit</button>
+    <button type="submit" class="bg-askews text-white px-4 py-2 rounded">Submit</button>
 </form>
 @endsection

@@ -5,7 +5,7 @@
     $steps = [
         ['label' => 'Form Submitted by Client', 'icon' => 'heroicon-o-pencil-square'],
         ['label' => 'Lead Sent to SharpSpring CRM', 'icon' => 'heroicon-o-paper-airplane'],
-        ['label' => 'Lead Detected by Askews Server', 'icon' => 'heroicon-o-server'],
+        ['label' => 'Lead Detected by our Server', 'icon' => 'heroicon-o-server'],
         ['label' => 'AI Generates Tailored Response', 'icon' => 'heroicon-o-cpu-chip'],
         ['label' => 'Reply Sent Back via SharpSpring', 'icon' => 'heroicon-o-inbox-arrow-down'],
         ['label' => 'Client Replies via Email', 'icon' => 'heroicon-o-envelope-open'],
@@ -26,16 +26,16 @@
         }
     }"
     x-init="advance"
-    class="space-y-6 max-w-xl mx-auto mb-10"
+    class="space-y-6 max-w-xl mb-10"
 >
-    <h2 class="text-2xl font-bold text-center mb-4">How Askews Legal Handles Your Enquiry</h2>
+    <h2 class="text-2xl font-bold text-askews mb-4">How we handles the enquiry</h2>
 
     @foreach ($steps as $index => $step)
         <div 
-            class="flex items-center space-x-4 transition-all duration-500"
+            class="flex space-x-4 transition-all duration-500"
             x-bind:class="{ 'opacity-50': step < {{ $index }} }"
         >
-            <x-dynamic-component :component="$step['icon']" class="w-6 h-6 text-blue-600" />
+            <x-dynamic-component :component="$step['icon']" class="w-6 h-6 text-askews" />
             <div class="text-base md:text-lg font-medium">{{ $step['label'] }}</div>
             <div class="ml-auto text-green-600 font-bold" x-show="{{ $index }} < step" x-transition>&check;</div>
         </div>
@@ -47,9 +47,9 @@
 </div>
 
 @foreach ($conversation as $entry)
-    <div class="{{ $entry['role'] === 'ai' ? 'bg-gray-100' : 'bg-blue-100' }} p-4 my-2 rounded">
+    <div class="{{ $entry['role'] === 'assistant' ? 'bg-gray-100' : 'bg-askews text-white' }} p-4 my-2 rounded">
         <strong>{{ ucfirst($entry['role']) }}:</strong><br>
-        @if($entry['role'] === 'ai')
+        @if($entry['role'] === 'assistant')
             @php
                 preg_match('/^Subject:\s*(.*?)\s*(?:\r\n|\n|\r)/i', $entry['message'], $subjectMatch);
                 $subject = $subjectMatch[1] ?? null;
@@ -71,6 +71,6 @@
 <form action="/reply" method="POST" class="mt-4">
     @csrf
     <textarea name="reply" placeholder="Your reply..." class="border p-2 w-full rounded" required></textarea>
-    <button type="submit" class="bg-green-600 text-white px-4 py-2 mt-2 rounded">Send Reply</button>
+    <button type="submit" class="bg-askews text-white px-4 py-2 mt-2 rounded">Send Reply</button>
 </form>
 @endsection

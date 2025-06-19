@@ -10,7 +10,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
     <div class="max-w-3xl mx-auto py-10 px-4">
-        <h1 class="text-3xl font-bold text-blue-800 mb-6">Askews Legal AI Demo</h1>
+        <h1 class="text-3xl font-bold text-askews mb-6">Askews Legal AI Demo</h1>
         @yield('content')
     </div>
 </body>

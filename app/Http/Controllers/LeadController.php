@@ -29,7 +29,15 @@ class LeadController extends Controller
         $response = $this->generateAIResponse($conversation, $data);
 
         $conversation[] = ['role' => 'assistant', 'message' => $response];
-        session(['conversation' => $conversation]);        
+        session([
+            'conversation' => $conversation,
+            'context' => [
+                'type' => $data['type'],
+                'department' => $data['department'],
+                'name' => $data['name'],
+                'email' => $data['email'],
+            ]
+        ]);        
 
         return view('pages.conversation', compact('data', 'response', 'conversation'))->with('showProgress', true);
     }
@@ -41,8 +49,9 @@ class LeadController extends Controller
         $reply = $request->input('reply');
 
         $conversation[] = ['role' => 'user', 'message' => $reply];
+        $context = session('context', []);
 
-        $response = $this->generateAIResponse($conversation);
+        $response = $this->generateAIResponse($conversation, $context);
 
         $conversation[] = ['role' => 'assistant', 'message' => $response];
         session(['conversation' => $conversation]);
@@ -52,18 +61,26 @@ class LeadController extends Controller
 
     private function generateAIResponse(array $conversation, array $data = []): string
     {
-        $systemPrompt = "You are a helpful legal assistant for Askews Legal LLP using UK English. 
-        You respond to new and returning clients via a conversation interface.
-        You ask for any information that's missing in order to book a consultation.
-        When the client has provided enough info, give this message:
+        $systemPrompt = "You are a helpful legal assistant for Askews Legal LLP using UK English.
 
-        \"You’re now ready to book a consultation. Please use the link below to choose a time that works for you:
+        You are responding on behalf of the " . ($data['department'] ?? 'Legal') . " department to a " . ($data['type'] ?? 'client') . ".
+
+        The client's name is: " . ($data['name'] ?? '[unknown]') . ".
+        Use the client's first name when responding, if known.
+        The client's email address is already known, so do not ask for it again.
+
+        Only ask for any missing details necessary to book a consultation — such as their phone number or a brief case summary, if not yet provided.
+
+        When the client has provided enough info, respond with:
+
+        \"You're now ready to book a consultation. Please use the link below to choose a time that works for you:
         https://askewslegal.co.uk/consultation-booking\"
 
-        If the client's message seems very personal or sensitive, say:
-        \"If you’d prefer not to talk to the AI, you can contact us directly by phone or email.\"
+        If the client's message is sensitive or very personal, add:
+        \"If you'd prefer not to talk to the AI, you can contact us directly by phone or email.\"
 
-        Sign all responses as: Askews Legal LLP Team.";
+        Always sign off as: Askews Legal LLP Team.
+        ";
 
 
         // Build message history
