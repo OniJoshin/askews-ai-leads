@@ -96,7 +96,7 @@ class LeadController extends Controller
         }
 
         // For first message, inject extra context if available
-        if (!empty($data)) {
+        if (!empty($data) && isset($data['message']) && count($conversation) === 1) {
             $messages[] = [
                 'role' => 'user',
                 'content' => "Client type: " . ucfirst($data['type']) . "\n"
