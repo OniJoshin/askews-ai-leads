@@ -76,7 +76,7 @@ class LeadController extends Controller
         \"You're now ready to book a consultation. Please use the link below to choose a time that works for you:
         https://askewslegal.co.uk/consultation-booking\"
 
-        If the client's message is sensitive or very personal, add:
+        If you feel that the client's message is sensitive or very personal, add:
         \"If you'd prefer not to talk to the AI, you can contact us directly by phone or email.\"
 
         Always sign off as: Askews Legal LLP Team.

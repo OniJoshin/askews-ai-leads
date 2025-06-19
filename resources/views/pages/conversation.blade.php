@@ -59,7 +59,12 @@
             @if($subject)
                 <p class="font-bold text-gray-800 mb-2">Subject: {{ $subject }}</p>
             @endif
-            <p>{{ $body }}</p>
+            @foreach (preg_split("/\r\n|\n|\r/", $body) as $para)
+                @if(trim($para) !== '')
+                    <p class="mb-3">{{ $para }}</p>
+                @endif
+            @endforeach
+
         @else
             {{ $entry['message'] }}
         @endif
